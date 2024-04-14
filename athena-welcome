@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-/usr/bin/python3 /usr/share/athena-welcome/athena-welcome.py
+exec python /usr/share/athena-welcome/athena-welcome.py "\$@"
