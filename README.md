@@ -6,8 +6,8 @@ This application provides an interface to launch the installer onto your system 
 
 ### Live ISO installation window
 
-![Live-ISO](https://github.com/Athena-OS/athena-welcome/assets/83867734/aea7b70a-b410-4f31-bfe6-813f0a0d91f6)
+![Live-ISO](https://github.com/Athena-OS/athena-welcome/assets/83867734/cb6afa7d-affa-4ddd-bcbb-de8f3ff9e66f)
 
 ### Post installation window
 
-![Post-install](https://github.com/Athena-OS/athena-welcome/assets/83867734/9a258ca9-dfef-4ed2-b421-2baafba5b8a3)
+![Post-Install](https://github.com/Athena-OS/athena-welcome/assets/83867734/2dfa9ed2-cc97-4dda-875b-e6512ab33b17)
