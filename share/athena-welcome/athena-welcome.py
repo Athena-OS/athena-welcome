@@ -168,10 +168,16 @@ class Main(Gtk.Window):
                 self.role_id = "web"
 
     def on_roles_clicked(self, widget):
-        app_cmd = [
-            "shell-rocket",
-            "pkexec sudo cyber-toolkit "+self.role_id+";$SHELL",
-        ]
+        if self.command_exists("pacman"):
+            app_cmd = [
+                "shell-rocket",
+                "pkexec cyber-toolkit "+self.role_id+";$SHELL",
+            ]
+        elif self.command_exists("nixos-rebuild"):
+            app_cmd = [
+                "shell-rocket",
+                "pkexec cyber-toolnix "+self.role_id+";$SHELL",
+            ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
 
@@ -504,7 +510,7 @@ class Main(Gtk.Window):
         elif self.command_exists("nixos-rebuild"):
             run_cmd = [
                 "shell-rocket",
-                "pkexec nix-channel --update; sudo nixos-rebuild switch;$SHELL",
+                "pkexec nix-channel --update; pkexec nixos-rebuild switch;$SHELL",
             ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
