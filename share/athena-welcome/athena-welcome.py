@@ -171,12 +171,14 @@ class Main(Gtk.Window):
         if self.command_exists("pacman"):
             app_cmd = [
                 "shell-rocket",
-                "pkexec cyber-toolkit "+self.role_id+";$SHELL",
+                "-c",
+                "pkexec cyber-toolkit "+self.role_id,
             ]
         elif self.command_exists("nixos-rebuild"):
             app_cmd = [
                 "shell-rocket",
-                "pkexec cyber-toolnix "+self.role_id+";$SHELL",
+                "-c",
+                "pkexec cyber-toolnix "+self.role_id,
             ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
@@ -194,7 +196,8 @@ class Main(Gtk.Window):
     def on_install_tui_clicked(self, widget):
         run_cmd = [
             "shell-rocket",
-            "pkexec aegis-tui;$SHELL",
+            "-c",
+            "pkexec aegis-tui",
         ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
@@ -476,7 +479,8 @@ class Main(Gtk.Window):
     def on_button_htb_clicked(self, widget):
         app_cmd = [
             "shell-rocket",
-            "htb-toolkit -u;$SHELL",
+            "-c",
+            "htb-toolkit -u",
         ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
@@ -505,12 +509,14 @@ class Main(Gtk.Window):
         if self.command_exists("pacman"):
             run_cmd = [
                 "shell-rocket",
-                "pkexec pacman -Syyu;$SHELL",
+                "-c",
+                "pkexec pacman -Syyu",
             ]
         elif self.command_exists("nixos-rebuild"):
             run_cmd = [
                 "shell-rocket",
-                "pkexec nix-channel --update; pkexec nixos-rebuild switch;$SHELL",
+                "-c",
+                "pkexec nix-channel --update; pkexec nixos-rebuild switch",
             ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
