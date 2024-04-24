@@ -505,11 +505,11 @@ def GUI(self, Gtk, GdkPixbuf):
     # ======================================================================
     #                  ATHENA IMAGE
     # ======================================================================
-    if self.command_exists("pacman"):
+    if command_exists("pacman"):
         pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
             os.path.join(base_dir, "images/athena-arch-one-liner.png"), 512, 512
         )
-    elif self.command_exists("nixos-rebuild"):
+    elif command_exists("nixos-rebuild"):
         pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
             os.path.join(base_dir, "images/athena-nix-one-liner.png"), 512, 512
         )
@@ -811,5 +811,5 @@ def GUI(self, Gtk, GdkPixbuf):
     self.vbox.pack_start(hbox_notify, False, False, 5)  # notify label
     self.vbox.pack_end(hbox_footer_buttons, False, False, 0)  # Footer
 
-    def command_exists(self, command):
-        return shutil.which(command) is not None
+def command_exists(self, command):
+    return shutil.which(command) is not None
