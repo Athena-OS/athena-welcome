@@ -168,13 +168,13 @@ class Main(Gtk.Window):
                 self.role_id = "web"
 
     def on_roles_clicked(self, widget):
-        if self.command_exists("pacman"):
+        if GUI.command_exists("pacman"):
             app_cmd = [
                 "shell-rocket",
                 "-c",
                 "pkexec cyber-toolkit "+self.role_id,
             ]
-        elif self.command_exists("nixos-rebuild"):
+        elif GUI.command_exists("nixos-rebuild"):
             app_cmd = [
                 "shell-rocket",
                 "-c",
@@ -506,13 +506,13 @@ class Main(Gtk.Window):
             return False
 
     def on_button_update_clicked(self, widget):
-        if self.command_exists("pacman"):
+        if GUI.command_exists("pacman"):
             run_cmd = [
                 "shell-rocket",
                 "-c",
                 "pkexec pacman -Syyu",
             ]
-        elif self.command_exists("nixos-rebuild"):
+        elif GUI.command_exists("nixos-rebuild"):
             run_cmd = [
                 "shell-rocket",
                 "-c",
@@ -520,9 +520,6 @@ class Main(Gtk.Window):
             ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
-
-    def command_exists(self, command):
-        return shutil.which(command) is not None
 
     def check_package_queue(self):
         while True:
@@ -855,7 +852,7 @@ class Main(Gtk.Window):
 
     def mirror_update(self):
         GLib.idle_add(self.button_mirrors.set_sensitive, False)
-        if self.command_exists("pacman"):
+        if GUI.command_exists("pacman"):
             GLib.idle_add(
                 self.label_notify.set_markup,
                 f"<span foreground='orange'><b>Updating your Arch mirrorlist</b>\n"
@@ -897,7 +894,7 @@ class Main(Gtk.Window):
             )
             print("Update mirrors completed")
             GLib.idle_add(self.label_notify.set_markup, "<b>Mirrorlist updated</b>")
-        elif self.command_exists("nixos-rebuild"):
+        elif GUI.command_exists("nixos-rebuild"):
             GLib.idle_add(
                 self.label_notify.set_markup,
                 f"<span foreground='orange'><b>Updating your Nix channels</b>\n"
