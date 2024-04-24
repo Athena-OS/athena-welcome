@@ -54,7 +54,7 @@ def GUI(self, Gtk, GdkPixbuf):
             headerbar.pack_start(
                 Gtk.Image().new_from_pixbuf(
                     GdkPixbuf.Pixbuf().new_from_file_at_size(
-                        os.path.join(base_dir, "images/athena-logo-white.png"), 16, 16
+                        os.path.join(base_dir, "images/athena.png"), 16, 16
                     )
                 )
             )
