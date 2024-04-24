@@ -7,6 +7,7 @@ import getpass
 from os.path import expanduser
 from ui.Stack import Stack
 from ui.StackSwitcher import StackSwitcher
+from athena_welcome import command_exists
 
 debug = False
 
@@ -505,10 +506,14 @@ def GUI(self, Gtk, GdkPixbuf):
     # ======================================================================
     #                  ATHENA IMAGE
     # ======================================================================
-
-    pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
-        os.path.join(base_dir, "images/athena-one-liner.png"), 512, 512
-    )
+    if command_exists("pacman"):
+        pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
+            os.path.join(base_dir, "images/athena-arch-one-liner.png"), 512, 512
+        )
+    elif command_exists("nixos-rebuild"):
+        pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
+            os.path.join(base_dir, "images/athena-nix-one-liner.png"), 512, 512
+        )
     image = Gtk.Image().new_from_pixbuf(pixbuf)
 
     # ======================================================================
