@@ -4,6 +4,7 @@
 
 import os
 import getpass
+import shutil
 from os.path import expanduser
 from ui.Stack import Stack
 from ui.StackSwitcher import StackSwitcher
@@ -35,6 +36,8 @@ Skel_Settings = "/etc/skel/.config/athena-welcome/settings.conf"
 dot_desktop = "/usr/share/applications/athena-welcome.desktop"
 autostart = home + "/.config/autostart/athena-welcome.desktop"
 
+def command_exists(command):
+    return shutil.which(command) is not None
 
 def GUI(self, Gtk, GdkPixbuf):
     # initialize main vbox
@@ -810,6 +813,3 @@ def GUI(self, Gtk, GdkPixbuf):
 
     self.vbox.pack_start(hbox_notify, False, False, 5)  # notify label
     self.vbox.pack_end(hbox_footer_buttons, False, False, 0)  # Footer
-
-def command_exists(self, command):
-    return shutil.which(command) is not None
