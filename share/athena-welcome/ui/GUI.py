@@ -88,8 +88,8 @@ def GUI(self, Gtk, GdkPixbuf):
         "🔍 Forensic Analyst 🔍",
         "🦠 Malware Analyst 🦠",
         "📱 Mobile Analyst 📱",
-        "🖧 Network Analyst 🖧",
-        "🌐 OSINT Specialist 🌐",
+        "🌐 Network Analyst 🌐",
+        "🕵️ OSINT Specialist 🕵️",
         "❤️ Red Teamer ❤️",
         "🕸️ Web Pentester 🕸️",
     ]
