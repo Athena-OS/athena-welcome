@@ -177,6 +177,7 @@ class Main(Gtk.Window):
             threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
         elif GUI.command_exists("nixos-rebuild"):
             app_cmd = [
+                "pkexec",
                 "sed",
                 "-i",
                 r"/cyber\s*=\s*{/,/}/ {s/enable = .*/enable = true;/; s/role = .*/role = \"" + self.role_id + "\";/}",
@@ -184,7 +185,7 @@ class Main(Gtk.Window):
             ]
 
             # After modifying the file, run the nixos-rebuild switch command
-            app_cmd_switch = ["nixos-rebuild", "switch"]
+            app_cmd_switch = ["pkexec", "nixos-rebuild", "switch"]
 
             # Run both commands in sequence using threading
             threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
