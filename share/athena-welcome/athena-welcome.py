@@ -175,8 +175,9 @@ class Main(Gtk.Window):
                 "pkexec cyber-toolkit "+self.role_id,
             ]
             threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
-        elif GUI.command_exists("sed"):
+        elif GUI.command_exists("nixos-rebuild"):
             app_cmd = [
+                "sed",
                 "-i",
                 r"/cyber\s*=\s*{/,/}/ {s/enable = .*/enable = true;/; s/role = .*/role = \"" + self.role_id + "\";/}",
                 "/etc/nixos/configuration.nix",
