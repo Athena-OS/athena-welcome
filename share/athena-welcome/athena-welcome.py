@@ -110,6 +110,14 @@ class Main(Gtk.Window):
             target=self.internet_notifier, args=(), daemon=True
         ).start()
 
+    def run_app(self, command):
+        print(f"Running command: {' '.join(command)}")
+        try:
+            result = subprocess.run(command, check=True, capture_output=True, text=True)
+            print(f"Command output: {result.stdout}")
+        except subprocess.CalledProcessError as e:
+            print(f"An error occurred: {e}. Output: {e.stderr}")
+
     # returns the login session
     def get_session(self):
         try:
@@ -186,6 +194,10 @@ class Main(Gtk.Window):
 
             # After modifying the file, run the nixos-rebuild switch command
             app_cmd_switch = ["pkexec", "nixos-rebuild", "switch"]
+
+            # Run both commands in sequence
+            self.run_app(app_cmd)
+            self.run_app(app_cmd_switch)
 
             # Run both commands in sequence using threading
             threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
