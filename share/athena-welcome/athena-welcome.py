@@ -174,14 +174,20 @@ class Main(Gtk.Window):
                 "-c",
                 "pkexec cyber-toolkit "+self.role_id,
             ]
-        elif GUI.command_exists("nixos-rebuild"):
+            threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
+        elif GUI.command_exists("sed"):
             app_cmd = [
-                "shell-rocket",
-                "-c",
-                "pkexec cyber-toolnix "+self.role_id,
+                "-i",
+                r"/cyber\s*=\s*{/,/}/ {s/enable = .*/enable = true;/; s/role = .*/role = \"" + self.role_id + "\";/}",
+                "/etc/nixos/configuration.nix",
             ]
 
-        threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
+            # After modifying the file, run the nixos-rebuild switch command
+            app_cmd_switch = ["nixos-rebuild", "switch"]
+
+            # Run both commands in sequence using threading
+            threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
+            threading.Thread(target=self.run_app, args=(app_cmd_switch,), daemon=True).start()
 
     def on_mirror_clicked(self, widget):
         threading.Thread(target=self.mirror_update, daemon=True).start()
