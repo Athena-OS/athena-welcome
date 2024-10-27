@@ -110,14 +110,6 @@ class Main(Gtk.Window):
             target=self.internet_notifier, args=(), daemon=True
         ).start()
 
-    def run_app(self, command):
-        print(f"Running command: {' '.join(command)}")
-        try:
-            result = subprocess.run(command, check=True, capture_output=True, text=True)
-            print(f"Command output: {result.stdout}")
-        except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}. Output: {e.stderr}")
-
     # returns the login session
     def get_session(self):
         try:
@@ -182,26 +174,14 @@ class Main(Gtk.Window):
                 "-c",
                 "pkexec cyber-toolkit "+self.role_id,
             ]
-            self.run_app(app_cmd)
         elif GUI.command_exists("nixos-rebuild"):
             app_cmd = [
-                "pkexec",
-                "sed",
-                "-i",
-                r"/cyber\s*=\s*{/,/}/ {/enable\s*=\s*/s/enable\s*=\s*.*/enable = true;/; /role\s*=\s*/s/role\s*=\s*.*/role = \"" + self.role_id + "\";/}",
-                "/etc/nixos/configuration.nix",
-            ]
-
-            # After modifying the file, run the nixos-rebuild switch command
-            app_cmd_switch = [
                 "shell-rocket",
                 "-c",
-                "pkexec nixos-rebuild switch"
+                "pkexec cyber-toolnix "+self.role_id,
             ]
 
-            # Run both commands in sequence
-            self.run_app(app_cmd)
-            self.run_app(app_cmd_switch)
+        threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
 
     def on_mirror_clicked(self, widget):
         threading.Thread(target=self.mirror_update, daemon=True).start()
@@ -536,7 +516,7 @@ class Main(Gtk.Window):
             run_cmd = [
                 "shell-rocket",
                 "-c",
-                "pkexec nix-channel --update; pkexec nixos-rebuild switch",
+                "pkexec bash -c 'nix-channel --update && nixos-rebuild switch'",
             ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
@@ -875,40 +855,19 @@ class Main(Gtk.Window):
         if GUI.command_exists("pacman"):
             GLib.idle_add(
                 self.label_notify.set_markup,
-                f"<span foreground='orange'><b>Updating your Arch mirrorlist</b>\n"
+                f"<span foreground='orange'><b>Updating your mirrorlists</b>\n"
                 f"This may take some time, please wait...</span>",
             )  # noqa
             
             subprocess.run(
                 [
                     "pkexec",
-                    "rate-mirrors",
-                    "--concurrency",
-                    "40",
-                    "--disable-comments",
-                    "--allow-root",
-                    "--save",
-                    "/etc/pacman.d/mirrorlist",
-                    "arch",
-                ],
-                shell=False,
-            )
-            GLib.idle_add(
-                self.label_notify.set_markup,
-                f"<span foreground='orange'><b>Updating your Chaotic mirrorlist</b>\n"
-                f"This may take some time, please wait...</span>",
-            )  # noqa
-            subprocess.run(
-                [
-                    "pkexec",
-                    "rate-mirrors",
-                    "--concurrency",
-                    "40",
-                    "--disable-comments",
-                    "--allow-root",
-                    "--save",
-                    "/etc/pacman.d/chaotic-mirrorlist",
-                    "chaotic-aur",
+                    "bash",
+                    "-c",
+                    (
+                        "rate-mirrors --concurrency 40 --disable-comments --allow-root --save /etc/pacman.d/mirrorlist arch && "
+                        "rate-mirrors --concurrency 40 --disable-comments --allow-root --save /etc/pacman.d/chaotic-mirrorlist chaotic-aur"
+                    ),
                 ],
                 shell=False,
             )
