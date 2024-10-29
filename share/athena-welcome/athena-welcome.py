@@ -68,7 +68,7 @@ class Main(Gtk.Window):
         super(Main, self).__init__(title="Athena Welcome")
         self.set_border_width(10)
         self.set_default_size(860, 250)
-        self.set_icon_from_file(os.path.join(base_dir, "images/athena.svg"))
+        self.set_icon_from_file(os.path.join(base_dir, "images/athenaos.svg"))
         self.set_position(Gtk.WindowPosition.CENTER)
         self.results = ""
 
