@@ -178,7 +178,7 @@ class Main(Gtk.Window):
             app_cmd = [
                 "shell-rocket",
                 "-c",
-                "pkexec cyber-toolnix "+self.role_id,
+                "pkexec bash -c \"sed -i '/cyber\\s*=\\s*{/,/}/ { /enable\\s*=\\s*/s/enable\\s*=\\s*.*/enable = true;/; /role\\s*=\\s*/s/role\\s*=\\s*.*/role = \\\"" + self.role_id + "\\\";/}' /etc/nixos/configuration.nix && nixos-rebuild switch\"",
             ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
