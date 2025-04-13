@@ -16,7 +16,7 @@ class Conflicts(Gtk.Window):
         self.set_border_width(10)
         self.set_default_size(550, 250)
         self.connect("delete-event", self.close)
-        self.set_icon_from_file(os.path.join(base_dir, 'images/arcolinux.png'))
+        self.set_icon_from_file(os.path.join(base_dir, 'images/athenaos.svg'))
         self.set_position(Gtk.WindowPosition.CENTER)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)

@@ -18,7 +18,8 @@ username = getpass.getuser()
 app_discord = "https://discord.gg/athena-os-977645785170714644"
 app_website = "https://athenaos.org/"
 app_github = "https://github.com/Athena-OS/athena"
-app_ticket = "https://github.com/Athena-OS/athena/issues"
+app_gitlab = "https://gitlab.com/athenaos"
+app_ticket = "https://gitlab.com/groups/athenaos/-/issues"
 app_forums = "https://www.arcolinuxforum.com"
 app_telegram = "https://t.me/arcolinux_d_b"
 app_youtube = "https://www.youtube.com/erikdubois"
@@ -38,6 +39,26 @@ autostart = home + "/.config/autostart/athena-welcome.desktop"
 
 def command_exists(command):
     return shutil.which(command) is not None
+
+
+def detect_package_manager():
+    if os.path.exists("/etc/os-release"):
+        with open("/etc/os-release", "r") as f:
+            content = f.read().lower()
+            if "arch" in content:
+                return "pacman"
+            elif "nixos" in content:
+                return "nix"
+            elif "fedora" in content or "rhel" in content or "centos" in content or "athena" in content:
+                return "dnf"
+            elif "debian" in content or "ubuntu" in content:
+                return "apt"
+            elif "opensuse" in content:
+                return "zypper"
+            elif "alpine" in content:
+                return "apk"
+    return None  # unknown or unsupported
+
 
 def GUI(self, Gtk, GdkPixbuf):
     # initialize main vbox
@@ -75,6 +96,8 @@ def GUI(self, Gtk, GdkPixbuf):
     vbox_stack_sidebar.add(stack)
 
     self.vbox.add(vbox_stack_sidebar)
+
+    manager = detect_package_manager()
     
     # initialize role combobox
     role_store = Gtk.ListStore(str)
@@ -433,25 +456,25 @@ def GUI(self, Gtk, GdkPixbuf):
         #    f"<b> <a href='{app_telegram}' title='{app_telegram}'>Telegram</a></b> is for chitchat - <b> <a href='{app_discord}' title='{app_discord}'>Discord</a></b> is for assistance.\n"
         #    f"We have a <b> <a href='{app_forums}' title='{app_forums}'>Forum</a></b> for the longer and more technical questions.\n\n"
         #)
-        desc2 = ("Choose your role and click the <b>Set Cyber Role</b> button to retrieve the main pentesting resources you need!\n\n" + #noqa
-			  "Click <b>HTB Update</b> to set your Hack The Box API key and start your hacking experience!\n\n" + #noqa
+        desc2 = (f"Choose your role and click the <b>Set Cyber Role</b> button to retrieve the main pentesting resources you need!\n\n" + #noqa
+			  f"Click <b>HTB Update</b> to set your Hack The Box API key and start your hacking experience!\n\n" + #noqa
                     
-                          "Get started on Athena. We communicate with our community through <b><a href='{app_discord}' title='{app_discord}'>Discord</a></b> or <b><a href='{app_github}' title='{app_github}'>GitHub</a></b>.\n" + #noqa
-                          "Join us to learn the latest news, ask questions or just for chatting.\n" +  # noqa
-                          "Open a <b><a href='{app_ticket}' title='{app_ticket}'>ticket</a></b> for any issues or proposals.\n\n" +  # noqa
-                          "Learn, study and have fun!")
+                          f"Get started on Athena. We communicate with our community through <b><a href='{app_discord}' title='{app_discord}'>Discord</a></b> or <b><a href='{app_gitlab}' title='{app_gitlab}'>GitLab</a></b>.\n" + #noqa
+                          f"Join us to learn the latest news, ask questions or just for chatting.\n" +  # noqa
+                          f"Open a <b><a href='{app_ticket}' title='{app_ticket}'>ticket</a></b> for any issues or proposals.\n\n" +  # noqa
+                          f"Learn, study and have fun!")
 
         label_info2.set_markup(desc2)
 
     else:
         label_info_header1.set_markup("\n<b>Welcome to Athena OS</b>\n")
-        desc = ("Choose your role and click the <b>Set Cyber Role</b> button to retrieve the main pentesting resources you need!\n\n" + #noqa
-			  "Click <b>HTB Update</b> to set your Hack The Box API key and start your hacking experience!\n\n" + #noqa
+        desc = (f"Choose your role and click the <b>Set Cyber Role</b> button to retrieve the main pentesting resources you need!\n\n" + #noqa
+			  f"Click <b>HTB Update</b> to set your Hack The Box API key and start your hacking experience!\n\n" + #noqa
                     
-                          "Get started on Athena. We communicate with our community through <b><a href='{app_discord}' title='{app_discord}'>Discord</a></b> or <b><a href='{app_github}' title='{app_github}'>GitHub</a></b>.\n" + #noqa
-                          "Join us to learn the latest news, ask questions or just for chatting.\n" +  # noqa
-                          "Open a <b><a href='{app_ticket}' title='{app_ticket}'>ticket</a></b> for any issues or proposals.\n\n" +  # noqa
-                          "Learn, study and have fun!")
+                          f"Get started on Athena. We communicate with our community through <b><a href='{app_discord}' title='{app_discord}'>Discord</a></b> or <b><a href='{app_gitlab}' title='{app_gitlab}'>GitLab</a></b>.\n" + #noqa
+                          f"Join us to learn the latest news, ask questions or just for chatting.\n" +  # noqa
+                          f"Open a <b><a href='{app_ticket}' title='{app_ticket}'>ticket</a></b> for any issues or proposals.\n\n" +  # noqa
+                          f"Learn, study and have fun!")
 
     label_info = Gtk.Label(xalign=0, yalign=0)
     label_info.set_markup(desc)
@@ -508,13 +531,13 @@ def GUI(self, Gtk, GdkPixbuf):
     # ======================================================================
     #                  ATHENA IMAGE
     # ======================================================================
-    if command_exists("pacman"):
-        pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
-            os.path.join(base_dir, "images/athena-arch-one-liner.png"), 512, 512
-        )
-    elif command_exists("nixos-rebuild"):
+    if command_exists("nixos-rebuild"):
         pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
             os.path.join(base_dir, "images/athena-nix-one-liner.png"), 512, 512
+        )
+    else:
+        pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
+            os.path.join(base_dir, "images/athena-arch-one-liner.png"), 512, 512
         )
     image = Gtk.Image().new_from_pixbuf(pixbuf)
 
@@ -568,39 +591,6 @@ def GUI(self, Gtk, GdkPixbuf):
     self.button_install_tui.connect(
         "query-tooltip", self.tooltip_callback, "Install Athena OS by Aegis Terminal User Interface"
     )
-
-    # ======================================================================
-    #                   BUTTON - EASY INSTALL (OFFLINE)
-    # ======================================================================
-
-    #self.button_easy_install = Gtk.Button(label="")
-    #button_easy_install_label = self.button_easy_install.get_child()
-    #button_easy_install_label.set_markup(
-    #    "<span size='large'><b>Easy Installation (Offline)</b></span>"
-    #)
-    #self.button_easy_install.connect("clicked", self.on_easy_install_clicked)
-    #self.button_easy_install.set_size_request(300, 60)
-    #self.button_easy_install.set_property("has-tooltip", True)
-    #self.button_easy_install.connect(
-    #    "query-tooltip", self.tooltip_callback, "No internet connection required"
-    #)
-
-    # ======================================================================
-    #                   BUTTON - ADVANCED INSTALL (ONLINE)
-    # ======================================================================
-
-    #self.button_adv_install = Gtk.Button(label="")
-    #button_adv_label = self.button_adv_install.get_child()
-
-    #button_adv_label.set_markup(
-    #    "<span size='large'><b>Advanced Installation (Online)</b></span>"
-    #)
-    #self.button_adv_install.connect("clicked", self.on_adv_install_clicked)
-    #self.button_adv_install.set_size_request(300, 60)
-    #self.button_adv_install.set_property("has-tooltip", True)
-    #self.button_adv_install.connect(
-    #    "query-tooltip", self.tooltip_callback, "Internet connection required"
-    #)
 
     # ======================================================================
     #                   BUTTON - SET ROLE
@@ -689,7 +679,8 @@ def GUI(self, Gtk, GdkPixbuf):
     # ======================================================================
     # hbox_util_buttons and hbox_util_buttons elements are positioned in Welcome Tab. Check the first rows above about them
     if username == user:
-        hbox_util_buttons.pack_start(self.button_mirrors, False, True, 0)
+        if manager == "pacman" or manager == "nix":
+            hbox_util_buttons.pack_start(self.button_mirrors, False, True, 0)
         hbox_util_buttons.pack_start(button_gparted, False, True, 0)
 
         hbox_install_buttons.pack_start(self.button_install_tui, True, True, 0)
@@ -703,7 +694,8 @@ def GUI(self, Gtk, GdkPixbuf):
         hbox_install_buttons.pack_start(self.button_update, False, True, 0)
         hbox_install_buttons.pack_start(self.button_htb, False, True, 0)
         hbox_install_buttons.pack_start(self.button_roles, False, True, 0)
-        hbox_install_buttons.pack_start(self.button_mirrors, False, True, 0)
+        if manager == "pacman" or manager == "nix":
+            hbox_install_buttons.pack_start(self.button_mirrors, False, True, 0)
 
         # self.button_arco_website = Gtk.Button(label="")
         # self.button_arco_website.get_child().set_markup("<b>Athena OS Website</b>")
