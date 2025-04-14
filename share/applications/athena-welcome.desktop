@@ -2,8 +2,8 @@
 Name=Athena Welcome
 GenericName=Athena Welcome
 X-GNOME-FullName=Athena Welcome
-Comment=Welcome Application for Athena OS Installation
-Exec=/usr/bin/athena-welcome
+Comment=Welcome Application for Athena OS
+Exec=bash -c "sleep 3 && /usr/bin/athena-welcome"
 Icon=athenaos
 Terminal=false
 Type=Application
