@@ -192,11 +192,17 @@ class Main(Gtk.Window):
                 "-c",
                 "pkexec bash -c \"sed -i '/cyber\\s*=\\s*{/,/}/ { /enable\\s*=\\s*/s/enable\\s*=\\s*.*/enable = true;/; /role\\s*=\\s*/s/role\\s*=\\s*.*/role = \\\"" + self.role_id + "\\\";/}' /etc/nixos/configuration.nix && nixos-rebuild switch\"",
             ]
-        else:
+        elif GUI.command_exists("pacman"):
             app_cmd = [
                 "shell-rocket",
                 "-c",
                 "pkexec cyber-toolkit "+self.role_id,
+            ]
+        elif GUI.command_exists("dnf"):
+            app_cmd = [
+                "shell-rocket",
+                "-c",
+                "cyber-shell -c "+self.role_id+" -s",
             ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
