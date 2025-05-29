@@ -198,11 +198,11 @@ class Main(Gtk.Window):
                 "-c",
                 "pkexec cyber-toolkit "+self.role_id,
             ]
-        elif GUI.command_exists("dnf"):
+        elif GUI.command_exists("dnf") or GUI.command_exists("rpm-ostree"):
             app_cmd = [
                 "shell-rocket",
                 "-c",
-                "cyber-shell -c "+self.role_id+" -s",
+                "cyber-shell -c " + self.role_id + " -s"
             ]
 
         threading.Thread(target=self.run_app, args=(app_cmd,), daemon=True).start()
