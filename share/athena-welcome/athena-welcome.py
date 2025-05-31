@@ -89,6 +89,8 @@ class Main(Gtk.Window):
         self.set_icon_from_file(os.path.join(base_dir, "images/athenaos.svg"))
         self.set_position(Gtk.WindowPosition.CENTER)
         self.results = ""
+        self.role_name = "none"
+        self.role_id = None
 
         if not os.path.exists(GUI.Settings):
             if not os.path.exists(GUI.home + "/.config/athena-welcome/"): # If the path does not exist, create it
@@ -142,6 +144,14 @@ class Main(Gtk.Window):
         else:
             self.popover.show_all()
 
+    def on_stack_child_changed(self, stack, param):
+        visible_child_name = stack.get_visible_child_name()
+        if hasattr(self, 'role_combo') and self.role_combo:
+            if visible_child_name == "Welcome" or visible_child_name == "Installation":
+                self.role_combo.show()
+            else:
+                self.role_combo.hide()
+
     # check if path exists
     # used to check if /sys/firmware/efi/fw_platform_size exists
     # if yes then display systemd-boot bootloader install option
@@ -157,32 +167,34 @@ class Main(Gtk.Window):
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
-            GUI.role_name = model[tree_iter][0]
-            print("Selected: role=%s" % GUI.role_name)
-            if "Blue Teamer" in GUI.role_name:
+            self.role_name = model[tree_iter][0]
+            print("Selected: role=%s" % self.role_name)
+            if "Blue Teamer" in self.role_name:
                 self.role_id = "blue"
-            elif "Bug Bounty Hunter" in GUI.role_name:
+            elif "Bug Bounty Hunter" in self.role_name:
                 self.role_id = "bugbounty"
-            elif "Cracker Specialist" in GUI.role_name:
+            elif "Cracker Specialist" in self.role_name:
                 self.role_id = "cracker"
-            elif "DoS Tester" in GUI.role_name:
+            elif "DoS Tester" in self.role_name:
                 self.role_id = "dos"
-            elif "Enthusiast Student" in GUI.role_name:
+            elif "Enthusiast Student" in self.role_name:
                 self.role_id = "student"
-            elif "Forensic Analyst" in GUI.role_name:
+            elif "Forensic Analyst" in self.role_name:
                 self.role_id = "forensic"
-            elif "Malware Analyst" in GUI.role_name:
+            elif "Malware Analyst" in self.role_name:
                 self.role_id = "malware"
-            elif "Mobile Analyst" in GUI.role_name:
+            elif "Mobile Analyst" in self.role_name:
                 self.role_id = "mobile"
-            elif "Network Analyst" in GUI.role_name:
+            elif "Network Analyst" in self.role_name:
                 self.role_id = "network"
-            elif "OSINT Specialist" in GUI.role_name:
+            elif "OSINT Specialist" in self.role_name:
                 self.role_id = "osint"
-            elif "Red Teamer" in GUI.role_name:
+            elif "Red Teamer" in self.role_name:
                 self.role_id = "red"
-            elif "Web Pentester" in GUI.role_name:
+            elif "Web Pentester" in self.role_name:
                 self.role_id = "web"
+            else:
+                self.role_id = None
 
 
     def on_roles_clicked(self, widget):
