@@ -88,17 +88,8 @@ def GUI(self, Gtk, GdkPixbuf):
 
     # initialize the stack-switcher
     stack_switcher = StackSwitcher(stack)
+    stack_switcher.set_halign(Gtk.Align.CENTER)
 
-    vbox_stack_sidebar = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-    vbox_stack_sidebar.set_name("stack_box")
-
-    vbox_stack_sidebar.add(stack_switcher)
-    vbox_stack_sidebar.add(stack)
-
-    self.vbox.add(vbox_stack_sidebar)
-
-    manager = detect_package_manager()
-    
     # initialize role combobox
     role_store = Gtk.ListStore(str)
     roles = [
@@ -163,6 +154,26 @@ def GUI(self, Gtk, GdkPixbuf):
         role_combo.set_active(12)
     else:
         role_combo.set_active(0)
+
+    self.role_combo = role_combo
+
+    hbox_switcher_and_combo = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    hbox_switcher_and_combo.pack_start(stack_switcher, True, True, 0)
+    hbox_switcher_and_combo.pack_end(self.role_combo, False, False, 0)
+
+    vbox_stack_sidebar = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+    vbox_stack_sidebar.set_name("stack_box")
+
+    vbox_stack_sidebar.add(hbox_switcher_and_combo)
+    vbox_stack_sidebar.add(stack)
+
+    self.vbox.add(vbox_stack_sidebar)
+
+    stack.connect("notify::visible-child-name", self.on_stack_child_changed)
+    self.on_stack_child_changed(stack, None)
+
+
+    manager = detect_package_manager()
     
     # vbox to contain all the installation controls
     vbox_install_stack = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
@@ -690,7 +701,6 @@ def GUI(self, Gtk, GdkPixbuf):
         hbox_userinfo_buttons.pack_start(hbox_user, False, True, 0)
 
     else:
-        combobox_stack.pack_start(role_combo, False, True, 0)
         hbox_install_buttons.pack_start(self.button_update, False, True, 0)
         hbox_install_buttons.pack_start(self.button_htb, False, True, 0)
         hbox_install_buttons.pack_start(self.button_roles, False, True, 0)
