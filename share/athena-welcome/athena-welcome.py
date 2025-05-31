@@ -318,34 +318,34 @@ class Main(Gtk.Window):
         self.save_settings(widget.get_active())
 
     def save_settings(self, state):
-    try:
-        with open(GUI.Settings, "r") as f:
-            lines = f.readlines()
+      try:
+          with open(GUI.Settings, "r") as f:
+              lines = f.readlines()
 
-        updated_lines = []
-        found_autostart = False
-        found_role = False
+          updated_lines = []
+          found_autostart = False
+          found_role = False
 
-        for line in lines:
-            if "autostart=" in line:
-                updated_lines.append("autostart=" + str(state) + "\n")
-                found_autostart = True
-            elif "role=" in line:
-                updated_lines.append(line)
-                found_role = True
-            else:
-                updated_lines.append(line)
+          for line in lines:
+              if "autostart=" in line:
+                  updated_lines.append("autostart=" + str(state) + "\n")
+                  found_autostart = True
+              elif "role=" in line:
+                  updated_lines.append(line)
+                  found_role = True
+              else:
+                  updated_lines.append(line)
 
-        if not found_autostart:
-            updated_lines.append("autostart=" + str(state) + "\n")
-        if not found_role:
-            updated_lines.append("role=none\n")
+          if not found_autostart:
+              updated_lines.append("autostart=" + str(state) + "\n")
+          if not found_role:
+              updated_lines.append("role=none\n")
 
-        with open(GUI.Settings, "w") as f:
-            f.writelines(updated_lines)
+          with open(GUI.Settings, "w") as f:
+              f.writelines(updated_lines)
 
-    except IOError as e:
-        print(f"Failed to save settings: {e}")
+      except IOError as e:
+          print(f"Failed to save settings: {e}")
 
     def load_settings(self):
         line = "True"
