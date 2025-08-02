@@ -47,9 +47,9 @@ def detect_package_manager():
             content = f.read().lower()
             if "arch" in content:
                 return "pacman"
-            elif "nixos" in content:
+            elif "nix" in content:
                 return "nix"
-            elif "fedora" in content or "rhel" in content or "centos" in content or "athena" in content:
+            elif "fedora" in content or "rhel" in content or "centos" in content:
                 return "dnf"
             elif "debian" in content or "ubuntu" in content:
                 return "apt"
