@@ -67,7 +67,7 @@ CHECK_COMMANDS = {
     "apt": lambda pkg: ["dpkg", "-s", pkg],
     "zypper": lambda pkg: ["rpm", "-q", pkg],
     "apk": lambda pkg: ["apk", "info", pkg],
-    "nixos": lambda pkg: ["nix-env", "-q", pkg],
+    "nix": lambda pkg: ["nix-env", "-q", pkg],
 }
 
 UPDATE_COMMANDS = {
@@ -77,7 +77,7 @@ UPDATE_COMMANDS = {
     "apt": "pkexec bash -c 'apt update && apt upgrade -y'",
     "zypper": "pkexec bash -c 'zypper refresh && zypper update -y'",
     "apk": "pkexec bash -c 'apk update && apk upgrade'",
-    "nixos": "pkexec bash -c 'nix-channel --update && nixos-rebuild switch'",
+    "nix": "pkexec bash -c 'nix-channel --update && nixos-rebuild switch'",
 }
 
 
