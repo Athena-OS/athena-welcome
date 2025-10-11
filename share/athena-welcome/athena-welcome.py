@@ -236,7 +236,7 @@ class Main(Gtk.Window):
         run_cmd = [
             "shell-rocket",
             "-c",
-            "pkexec aegis-tui",
+            "pkexec aegis",
         ]
 
         threading.Thread(target=self.run_app, args=(run_cmd,), daemon=True).start()
