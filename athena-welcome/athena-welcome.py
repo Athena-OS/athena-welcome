@@ -22,6 +22,8 @@ gi.require_version("Gtk", "3.0")
 # gi.require_version("Wnck", "3.0")
 from gi.repository import Gtk, GdkPixbuf, GLib, Gdk  # Wnck
 
+GLib.set_prgname("athena-welcome")
+
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 REMOTE_SERVER = "www.bing.com"
 # css = """
