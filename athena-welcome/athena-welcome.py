@@ -210,7 +210,7 @@ class Main(Gtk.Window):
             app_cmd = [
                 "shell-rocket",
                 "-c",
-                "pkexec cyber-toolkit "+self.role_id,
+                "cyber-toolkit "+self.role_id,
             ]
         elif GUI.command_exists("dnf") or GUI.command_exists("rpm-ostree"):
             app_cmd = [
