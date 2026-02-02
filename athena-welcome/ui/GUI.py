@@ -130,7 +130,7 @@ def GUI(self, Gtk, GdkPixbuf):
 
     if "blue" == strout:
         role_combo.set_active(1)
-    elif "bugbounty" == strout:
+    elif "bountyhunter" == strout:
         role_combo.set_active(2)
     elif "cracker" == strout:
         role_combo.set_active(3)

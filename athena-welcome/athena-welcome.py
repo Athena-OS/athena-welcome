@@ -174,7 +174,7 @@ class Main(Gtk.Window):
             if "Blue Teamer" in self.role_name:
                 self.role_id = "blue"
             elif "Bug Bounty Hunter" in self.role_name:
-                self.role_id = "bugbounty"
+                self.role_id = "bountyhunter"
             elif "Cracker Specialist" in self.role_name:
                 self.role_id = "cracker"
             elif "DoS Tester" in self.role_name:
